@@ -1,0 +1,13 @@
+{
+  "name": "material-zkp-generator",
+  "version": "1.0.0",
+  "description": "ZKP Generator for Material Certifications",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "snarkjs": "^0.5.0",
+    "circomlib": "^2.0.5"
+  }
+}

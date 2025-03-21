@@ -1,0 +1,14 @@
+FROM node:16-slim
+
+RUN apt-get update && \
+    apt-get install -y python3 make g++ && \
+    apt-get clean
+
+# Set working directory
+WORKDIR /workspace
+
+# Copy everything
+COPY . .
+
+RUN chmod +x /workspace/run.sh
+ENTRYPOINT ["/workspace/run.sh"]

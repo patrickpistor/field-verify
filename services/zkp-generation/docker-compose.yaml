@@ -1,0 +1,6 @@
+services:
+  zkp-service:
+    build: .
+    volumes:
+      - ./inputs:/workspace/inputs
+      - ./outputs:/workspace/outputs
