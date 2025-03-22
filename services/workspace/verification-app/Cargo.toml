@@ -1,0 +1,14 @@
+[package]
+name = "material-verification-workspace"
+version = "0.1.0"
+edition = "2021"
+
+[workspace]
+members = [
+    "app",
+    "lib",
+    "prover",
+]
+
+[dependencies]
+pico-sdk = { git = "https://github.com/brevis-network/pico" }
