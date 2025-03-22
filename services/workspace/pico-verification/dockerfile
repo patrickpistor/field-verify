@@ -30,5 +30,7 @@ WORKDIR /project/verification-app/app
 # Build the RISC-V verification app
 RUN cargo pico build
 
-# Optional: keep container running for debugging
-CMD ["bash", "-c", "tail -f /dev/null"]
+WORKDIR /project/pico-verification
+
+# This ensures the API starts when the container starts
+CMD ["cargo", "run", "--release", "--", "--api", "--output", "/project/output", "--port", "3000"]

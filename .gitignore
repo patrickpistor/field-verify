@@ -1,3 +1,6 @@
 services/workspace/verification-app/app/elf
 services/workspace/verification-app/target
 services/workspace/pico-verification/target
+services/workspace/pico-verification/input/*
+services/workspace/pico-verification/output/*
+services/workspace/pico-verification/fly.toml
