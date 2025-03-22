@@ -9,7 +9,7 @@ RUN rustup install nightly-2024-11-27 && \
     rustup default nightly-2024-11-27 && \
     rustup component add rust-src --toolchain nightly-2024-11-27
 
-# Clone Pico repo and install CLI
+# Install Pico CLI
 WORKDIR /tmp
 RUN git clone https://github.com/brevis-network/pico
 WORKDIR /tmp/pico/sdk/cli
@@ -18,5 +18,17 @@ RUN cargo install --locked --force --path .
 # Set default working directory 
 WORKDIR /project
 
-# Keep container running
+# Copy the entire verification-app directory
+COPY ../verification-app /project/verification-app
+
+# Verify contents
+RUN pwd && ls -la /project/verification-app/app && find /project -name "Cargo.toml"
+
+# Set working directory for build
+WORKDIR /project/verification-app/app
+
+# Build the RISC-V verification app
+RUN cargo pico build
+
+# Optional: keep container running for debugging
 CMD ["bash", "-c", "tail -f /dev/null"]

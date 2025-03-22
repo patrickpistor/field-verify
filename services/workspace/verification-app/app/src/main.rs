@@ -1,43 +1,46 @@
 #![no_main]
 
 use pico_sdk::entrypoint;
-use pico_sdk::io::{commit};
+use pico_sdk::io::{read_as, commit};
 use serde::{Deserialize, Serialize};
+use std::collections::HashMap;
 
-// Mark this as the entrypoint for the RISC-V program
 entrypoint!(main);
 
-// A simple struct for material verification
 #[derive(Serialize, Deserialize, Debug)]
 struct MaterialInput {
-    property_values: Vec<f64>,
-    min_thresholds: Vec<f64>,
-    max_thresholds: Vec<f64>,
+    properties_tested: PropertiesInfo,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+struct PropertiesInfo {
+    public_properties: HashMap<String, PropertyValue>,
+    private_properties: HashMap<String, PropertyValue>,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+struct PropertyValue {
+    value: f64,
+    threshold: Threshold,
+    passed: bool,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+struct Threshold {
+    min: f64,
+    max: f64,
 }
 
 pub fn main() {
-    // Use hardcoded values for now
-    let input = MaterialInput {
-        property_values: vec![53.9, 50.6, 16.0],
-        min_thresholds: vec![42.0, 35.0, 8.0],
-        max_thresholds: vec![100.0, 100.0, 30.0],
-    };
+    // Directly use read_as without Result handling
+    let input: MaterialInput = read_as();
     
-    // Later we can try to uncomment this to use read_as:
-    // let input = pico_sdk::io::read_as::<MaterialInput>();
-    
-    println!("Using input data");
-    
-    // Verify each property
     let mut all_compliant = true;
     let mut compliance_results = Vec::new();
     
-    for i in 0..input.property_values.len() {
-        let value = input.property_values[i];
-        let min = input.min_thresholds[i];
-        let max = input.max_thresholds[i];
-        
-        let is_compliant = value >= min && value <= max;
+    // Verify public properties
+    for (_, property) in &input.properties_tested.public_properties {
+        let is_compliant = is_within_threshold(property);
         compliance_results.push(is_compliant);
         
         if !is_compliant {
@@ -45,11 +48,29 @@ pub fn main() {
         }
     }
     
-    // Commit results to public output
+    // Verify private properties
+    for (_, property) in &input.properties_tested.private_properties {
+        let is_compliant = is_within_threshold(property);
+        compliance_results.push(is_compliant);
+        
+        if !is_compliant {
+            all_compliant = false;
+        }
+    }
+    
+    // Commit results: first value is overall compliance
     commit(&all_compliant);
+    
+    // Commit individual property compliance results
     for result in compliance_results {
         commit(&result);
     }
+}
+
+fn is_within_threshold(property: &PropertyValue) -> bool {
+    let value = property.value;
+    let min = property.threshold.min;
+    let max = property.threshold.max;
     
-    println!("Verification completed: {}", all_compliant);
+    value >= min && value <= max
 }

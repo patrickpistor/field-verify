@@ -1,12 +1,12 @@
 services:
   pico-development:
     build:
-      context: .
-      dockerfile: dockerfile
+      context: ../
+      dockerfile: pico-verification/dockerfile
     volumes:
-      # Mount specific directories individually to avoid conflicts
       - ./:/project
       - ../verification-app:/project/verification-app 
+      - ../pico-verification:/project/pico-verification
     environment:
       - RUST_BACKTRACE=1
     stdin_open: true

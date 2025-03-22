@@ -10,9 +10,9 @@ pico-sdk = { git = "https://github.com/brevis-network/pico" }
 [target.'cfg(target_arch = "riscv32")'.dependencies]
 material-verification-lib = { path = "../lib" }
 serde = { version = "1.0", features = ["derive"] }
-
 # Instead of using js feature, let's disable default features and use a custom feature
 getrandom = { version = "0.2", features = ["custom"] }
 
 # Add this to disable rand completely
 rand = { version = "0.8", default-features = false }
+serde_json = "1.0"
