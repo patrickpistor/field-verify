@@ -1,0 +1,10 @@
+services:
+  pico-verification:
+    build:
+      context: .
+      dockerfile: dockerfile
+    volumes:
+      - ./input:/data/input
+      - ./output:/data/output
+    environment:
+      - RUST_LOG=info

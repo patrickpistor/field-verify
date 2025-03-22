@@ -1,0 +1,69 @@
+{
+  "materialId": "ALU-12345",
+  "materialType": "aluminum",
+  "standard": "ASTM-B221-14",
+  "timestamp": "2025-03-22T02:50:51.604Z",
+  "verificationId": "VER-ALU-1742611851604-3016",
+  "overallCompliance": "PASS",
+  "properties": {
+    "tensile_strength": {
+      "property": "tensile_strength",
+      "value": 53.9,
+      "thresholds": {
+        "min": 42,
+        "max": 100
+      },
+      "compliant": true,
+      "isPrivate": false
+    },
+    "yield_strength": {
+      "property": "yield_strength",
+      "value": 50.6,
+      "thresholds": {
+        "min": 35,
+        "max": 100
+      },
+      "compliant": true,
+      "isPrivate": false
+    },
+    "elongation": {
+      "property": "elongation",
+      "value": 16,
+      "thresholds": {
+        "min": 8,
+        "max": 30
+      },
+      "compliant": true,
+      "isPrivate": false
+    },
+    "chemical_composition_Si": {
+      "property": "chemical_composition_Si",
+      "value": "**REDACTED**",
+      "thresholds": "**REDACTED**",
+      "compliant": true,
+      "isPrivate": true
+    },
+    "chemical_composition_Fe": {
+      "property": "chemical_composition_Fe",
+      "value": "**REDACTED**",
+      "thresholds": "**REDACTED**",
+      "compliant": true,
+      "isPrivate": true
+    }
+  },
+  "complianceSummary": {
+    "totalProperties": 5,
+    "publicProperties": 3,
+    "privateProperties": 2,
+    "passingProperties": 5,
+    "failingProperties": 0
+  },
+  "zkpInfo": {
+    "implemented": true,
+    "proofType": "Groth16 ZK Proof",
+    "circuit": "material_verifier_aluminum_ASTM_B221_14",
+    "proof": "{\"pi_a\":[\"10083053776899969091342478314333820532947473302883439989508258121551590599878\",\"1849444188...",
+    "publicSignals": "[\"1\",\"1\",\"1\",\"1\",\"1\",\"1\",\"0\",\"400000\",\"8000000\",\"42000000\",\"35000000\",\"700000\",\"800000\",\"30000000\",\"...",
+    "verified": true
+  }
+}

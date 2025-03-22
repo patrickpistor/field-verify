@@ -1,7 +1,8 @@
 {
-  "materialId": "CERT-6078942",
+  "materialId": "ALU-12345",
   "materialType": "aluminum",
   "standard": "ASTM-B221-14",
+  "privatePropNames": ["chemical_composition_Si", "chemical_composition_Fe"],
   "materialProps": {
     "tensile_strength": 53.9,
     "yield_strength": 50.6,
@@ -15,5 +16,11 @@
     "elongation": { "min": 8.0, "max": 30.0 },
     "chemical_composition_Si": { "min": 0.4, "max": 0.8 },
     "chemical_composition_Fe": { "min": 0.0, "max": 0.7 }
+  },
+  "metadata": {
+    "manufacturer": "KAISER ALUMINUM",
+    "manufacturerLocation": "KALAMAZOO, MI 49048",
+    "productionDate": "2019-08-01",
+    "batchNumber": "200250141"
   }
 }

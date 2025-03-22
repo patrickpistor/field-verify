@@ -1,8 +1,19 @@
 FROM node:16-slim
 
+# Install required dependencies
 RUN apt-get update && \
-    apt-get install -y python3 make g++ && \
+    apt-get install -y python3 make g++ build-essential libgmp-dev git curl && \
     apt-get clean
+
+# Install Rust (needed for circom)
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+ENV PATH="/root/.cargo/bin:${PATH}"
+
+# Install circom
+RUN git clone https://github.com/iden3/circom.git && \
+    cd circom && \
+    cargo build --release && \
+    cargo install --path circom
 
 # Set working directory
 WORKDIR /workspace
@@ -10,5 +21,15 @@ WORKDIR /workspace
 # Copy everything
 COPY . .
 
+# Install dependencies 
+RUN npm install
+# Install snarkjs globally for CLI use
+RUN npm install -g snarkjs@0.4.22
+
+# Increase Node memory limit
+ENV NODE_OPTIONS=--max-old-space-size=4096
+
+# Make the run script executable
 RUN chmod +x /workspace/run.sh
+
 ENTRYPOINT ["/workspace/run.sh"]

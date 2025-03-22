@@ -1,0 +1,24 @@
+{
+  "material_id": "ALU-12345",
+  "material_type": "aluminum",
+  "standard": "ASTM-B221-14",
+  "timestamp": "2025-03-22T04:09:06.016034007+00:00",
+  "verification_id": "VER-PICO-1742616546016-31833",
+  "overall_compliance": "PASS",
+  "properties": {},
+  "compliance_summary": {
+    "total_properties": 5,
+    "public_properties": 3,
+    "private_properties": 2,
+    "passing_properties": 5,
+    "failing_properties": 0
+  },
+  "zkp_info": {
+    "implemented": true,
+    "proof_type": "Pico zkVM Proof",
+    "circuit": "material_verifier_pico",
+    "proof": "pico-proof-placeholder",
+    "public_signals": "[]",
+    "verified": true
+  }
+}

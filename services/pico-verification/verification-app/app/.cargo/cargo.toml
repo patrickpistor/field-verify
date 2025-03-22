@@ -1,0 +1,5 @@
+[build]
+target = "riscv32im-pico-zkvm"
+
+[target.riscv32im-pico-zkvm]
+runner = "cargo pico prove"

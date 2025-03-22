@@ -1,19 +1,17 @@
 #!/bin/bash
 
-echo "Starting ZKP generation process..."
+# Read input parameters from mounted JSON file
+INPUT_FILE=${1:-/workspace/inputs/input.json}
+OUTPUT_DIR=${2:-/workspace/outputs}
 
-# Input and output directories
-INPUT_FILE="/workspace/inputs/input.json"
-OUTPUT_DIR="/workspace/outputs"
-
+echo "Starting material verification process..."
 echo "Using input file: $INPUT_FILE"
 echo "Writing output to: $OUTPUT_DIR"
 
-# Debug - list contents
-echo "Input directory contents:"
-ls -la /workspace/inputs/
+# Create dummy verification files first
+node /workspace/compile-circuits.js $INPUT_FILE
 
-# Run the ZKP generation script
-node /workspace/app/generate-zkp.js "$INPUT_FILE" "$OUTPUT_DIR"
+# Run the verification process
+node /workspace/generate-zkp.js $INPUT_FILE $OUTPUT_DIR
 
-echo "ZKP generation complete!"
+echo "Verification complete!"
