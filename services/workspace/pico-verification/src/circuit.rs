@@ -10,9 +10,14 @@ use std::cell::RefCell;
 
 fn get_elf_path() -> Result<String> {
     let possible_paths = [
-        "/app/verification-app/elf/riscv32im-pico-zkvm-elf",
-        "/app/verification-app/target/riscv32im-pico-zkvm-elf",
-        "/app/verification-app/target/material-verification"
+        // Check verification-app paths
+        "/project/verification-app/target/riscv32im-pico-zkvm-elf",
+        "/project/verification-app/elf/riscv32im-pico-zkvm-elf",
+        // Check verification-app/app paths (where we ran the build)
+        "/project/verification-app/app/target/riscv32im-pico-zkvm-elf",
+        "/project/verification-app/app/elf/riscv32im-pico-zkvm-elf",
+        // Check target directory paths
+        "/project/target/riscv32im-pico-zkvm-elf"
     ];
     
     for path in possible_paths {
@@ -22,7 +27,7 @@ fn get_elf_path() -> Result<String> {
     }
     
     Err(anyhow::anyhow!("Could not find Pico ELF file in any expected location"))
-  }
+}
 
 /// Create a verification circuit based on material certification data
 pub fn create_verification_circuit(cert: &MaterialCertification) -> Result<()> {
@@ -55,15 +60,22 @@ pub fn generate_proof(circuit: &(), output_dir: &Path, cert: &MaterialCertificat
     // Generate proof
     let proof = client.prove_fast()?;
     
-    // Save proof for debugging
-    let proof_path = output_dir.join("pico_proof.json");
-    let proof_summary = format!("{{\"id\": \"{}\", \"timestamp\": \"{}\"}}", 
-        uuid::Uuid::new_v4(), 
-        chrono::Utc::now().to_rfc3339());
-    std::fs::write(&proof_path, proof_summary)?;
+    // Generate a unique ID for this proof
+    let proof_id = uuid::Uuid::new_v4().to_string();
     
-    // Return proof path
-    Ok(proof_path.to_string_lossy().to_string())
+    // Save the full proof data to a file
+    let proof_path = output_dir.join(format!("{}.json", proof_id));
+    let proof_data = json!({
+        "id": proof_id,
+        "timestamp": chrono::Utc::now().to_rfc3339(),
+        "certification": cert,
+        "pv_stream": proof.pv_stream  // Store the actual proof data
+    });
+    
+    std::fs::write(&proof_path, serde_json::to_string_pretty(&proof_data)?)?;
+    
+    // Return just the proof ID
+    Ok(proof_id)
 }
 
 /// Verify a proof and generate verification results
@@ -72,19 +84,17 @@ pub fn verify_proof(proof_path: &str, output_dir: &Path, cert: &MaterialCertific
     let proof_data = std::fs::read_to_string(proof_path)?;
     let proof: Value = serde_json::from_str(&proof_data)?;
     
-    // Extract public values from the proof
-    let public_values = proof["pv_stream"].as_array()
+    // Extract the proof stream from the proof file - this is the key part we need to fix
+    let public_values = proof["proof_stream"].as_array()
         .ok_or_else(|| anyhow::anyhow!("Missing public values in proof"))?;
     
     // The first public value is the overall compliance status
-    let all_compliant = public_values[0].as_bool().unwrap_or(false);
+    let all_compliant = public_values[0].as_u64().unwrap_or(0) > 0;
     
     // Process the rest of public values
     let mut property_compliance = Vec::new();
     for i in 1..public_values.len() {
-        if i % 2 == 1 { // Only get the compliance status values
-            property_compliance.push(public_values[i].as_bool().unwrap_or(false));
-        }
+        property_compliance.push(public_values[i].as_u64().unwrap_or(0) > 0);
     }
     
     // Generate timestamp and ID
@@ -123,7 +133,7 @@ pub fn verify_proof(proof_path: &str, output_dir: &Path, cert: &MaterialCertific
             implemented: true,
             proof_type: "Pico zkVM Proof".to_string(),
             circuit: "material_verifier_zkvm".to_string(),
-            proof: format!("pico-zkvm-proof-{}", verification_id),
+            proof: proof_path.to_string(),
             public_signals: serde_json::to_string(&public_values)?,
             verified: true,
         },

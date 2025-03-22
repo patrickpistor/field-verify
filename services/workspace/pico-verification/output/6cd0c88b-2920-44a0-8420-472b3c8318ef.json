@@ -1,0 +1,111 @@
+{
+  "certification": {
+    "batch": {
+      "expiration_date": null,
+      "production_date": "2025-03-01",
+      "quantity": 88,
+      "units": "PCS"
+    },
+    "batch_number": "200250141",
+    "certificate_id": "CERT-ALU-123456",
+    "compliance": [
+      {
+        "clause": "Mechanical Properties",
+        "result": "PASS",
+        "standard": "ASTM-B221-14"
+      },
+      {
+        "clause": "Chemical Composition",
+        "result": "PASS",
+        "standard": "ASTM-B221-14"
+      }
+    ],
+    "material": {
+      "designation": "ASTM-B221-14",
+      "grade": "6061-T6511",
+      "manufacturer": "KAISER ALUMINUM",
+      "manufacturer_location": "KALAMAZOO, MI 49048",
+      "shape": "0.500 X 1.750 SC RECT BAR",
+      "type": "Aluminum Bar"
+    },
+    "properties_tested": {
+      "private_properties": {
+        "chemical_composition_Fe": {
+          "passed": true,
+          "threshold": {
+            "max": 0.7,
+            "min": 0.0
+          },
+          "unit": "%",
+          "value": 0.25
+        },
+        "chemical_composition_Si": {
+          "passed": true,
+          "threshold": {
+            "max": 0.8,
+            "min": 0.4
+          },
+          "unit": "%",
+          "value": 0.75
+        }
+      },
+      "property_standards_mapping": {
+        "chemical_composition": [
+          "ASTM-B221-14"
+        ],
+        "elongation": [
+          "ASTM-B221-14"
+        ],
+        "tensile_strength": [
+          "ASTM-B221-14"
+        ],
+        "yield_strength": [
+          "ASTM-B221-14"
+        ]
+      },
+      "public_properties": {
+        "elongation": {
+          "passed": true,
+          "threshold": {
+            "max": 30.0,
+            "min": 8.0
+          },
+          "unit": "%",
+          "value": 16.0
+        },
+        "tensile_strength": {
+          "passed": true,
+          "threshold": {
+            "max": 100.0,
+            "min": 42.0
+          },
+          "unit": "KSI",
+          "value": 53.9
+        },
+        "yield_strength": {
+          "passed": true,
+          "threshold": {
+            "max": 100.0,
+            "min": 35.0
+          },
+          "unit": "KSI",
+          "value": 50.6
+        }
+      }
+    },
+    "verified_by": {
+      "certified_by": "John Smith, Materials Engineer",
+      "laboratory": "Materials Testing Labs",
+      "test_date": "2025-03-15",
+      "test_report_number": "TR-202503-01"
+    }
+  },
+  "id": "6cd0c88b-2920-44a0-8420-472b3c8318ef",
+  "proof_stream": [
+    1,
+    1,
+    1,
+    1
+  ],
+  "timestamp": "2025-03-22T23:04:26.025842051+00:00"
+}

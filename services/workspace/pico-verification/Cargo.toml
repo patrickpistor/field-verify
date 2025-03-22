@@ -17,3 +17,4 @@ tokio = { version = "1.35", features = ["full"] }
 uuid = { version = "1.4", features = ["v4"] }
 tracing = "0.1"
 tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+warp = "0.3"

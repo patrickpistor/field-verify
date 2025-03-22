@@ -9,5 +9,7 @@ services:
       - ../pico-verification:/project/pico-verification
     environment:
       - RUST_BACKTRACE=1
+    ports:
+      - "3000:3000"
     stdin_open: true
     tty: true
