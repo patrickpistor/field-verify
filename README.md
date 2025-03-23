@@ -1,14 +1,13 @@
-# Field Verify
+# 🧱 MaterialProof
 
 ## Description
 
-Field Verify is a web application designed for instant on-site verification of construction material certifications. By leveraging zero-knowledge proofs, it ensures the authenticity of materials without compromising manufacturers' proprietary information.
+MaterialProof is a web application designed for instant on-site verification of construction material certifications. By leveraging zero-knowledge proofs, it ensures the authenticity of materials without compromising manufacturers' proprietary information.
 
 ## Features
 
 - **Instant Verification:** Quickly validate material certifications on-site.
 - **Privacy-Preserving:** Utilizes zero-knowledge proofs to protect confidential manufacturer data.
-- **User-Friendly Interface:** Simplified design for ease of use by field personnel.
 
 ## Installation and Usage
 
