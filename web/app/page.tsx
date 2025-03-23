@@ -1,7 +1,7 @@
-// app/page.tsx
 'use client';
 
 import { useState, useEffect } from 'react';
+// idk how to fix this doesn't actually break anything
 import { useForm } from 'react-hook-form';
 import { QRCodeSVG } from 'qrcode.react';
 import axios from 'axios';
