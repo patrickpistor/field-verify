@@ -1,14 +1,19 @@
+import { use } from 'react';
 import VerificationClient from './client';
 
-export default async function VerificationPage({
+export default function VerificationPage({
   params,
 }: {
-  params: { proofId: string; certificationId: string };
+  params: Promise<{ proofId: string; certificationId: string }>;
 }) {
-  // In a Server Component, we can safely await the params
-  const proofId = params.proofId;
-  const certificationId = params.certificationId;
+  const resolvedParams = use(params);
+  const proofId = resolvedParams.proofId;
+  const certificationId = resolvedParams.certificationId;
   
-  // Pass the params to the Client Component
-  return <VerificationClient proofId={proofId} certificationId={certificationId} />;
+  return (
+    <VerificationClient 
+      proofId={proofId} 
+      certificationId={certificationId} 
+    />
+  );
 }

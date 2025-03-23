@@ -4,3 +4,4 @@ services/workspace/pico-verification/target
 services/workspace/pico-verification/input/*
 services/workspace/pico-verification/output/*
 services/workspace/pico-verification/fly.toml
+services/workspace/pico-verification/depot.json

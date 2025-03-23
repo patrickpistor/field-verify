@@ -1,10 +1,8 @@
-// app/verify/[proofId]/[certificationId]/client.tsx
 'use client';
 
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
-// Client component receives props directly, not params
 export default function VerificationClient({
   proofId,
   certificationId,
@@ -15,28 +13,35 @@ export default function VerificationClient({
   const [isLoading, setIsLoading] = useState(true);
   const [verificationData, setVerificationData] = useState(null);
   const [error, setError] = useState<string | null>(null);
+  const localIP = '192.168.1.86';
+
+  const getBackendUrl = () => {
+    if (localIP) {
+      // Extract port from your NEXT_PUBLIC_BACKEND_URL or use a default
+      const backendPort = new URL(process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3000').port || '3000';
+      return `http://${localIP}:${backendPort}`;
+    }
+    return process.env.NEXT_PUBLIC_BACKEND_URL;
+  };
 
   useEffect(() => {
     async function verifyProof() {
       try {
         console.log(`Verifying proof: ${proofId} for certificate: ${certificationId}`);
         
-        // Use POST with the correct body format
         const response = await axios.post(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/verify-proof`, 
+          `${getBackendUrl()}/api/verify-proof`, 
           {
             proof_id: proofId,
             certification_id: certificationId
           }
         );
         
-        console.log('Verification response:', response.data);
         setVerificationData(response.data);
       } catch (err) {
         console.error('Verification error:', err);
         if (axios.isAxiosError(err)) {
           setError(`API Error: ${err.message} (${err.response?.status || 'No status'})`);
-          console.error('Response data:', err.response?.data);
         } else {
           setError(`Unexpected error: ${err instanceof Error ? err.message : String(err)}`);
         }

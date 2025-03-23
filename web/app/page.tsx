@@ -1,12 +1,14 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-// idk how to fix this doesn't actually break anything
 import { useForm } from 'react-hook-form';
 import { QRCodeSVG } from 'qrcode.react';
 import axios from 'axios';
 import Editor from '@monaco-editor/react';
-import sampleData from './sample.json';
+import aluminumBarData from './aluminum-bar.json';
+import copperSheetData from './copper-sheet.json';
+import steelRodData from './steel-rod.json';
+
 
 // Define TypeScript interfaces for our data structure
 interface PropertyTest {
@@ -60,9 +62,12 @@ export default function Home() {
   const [jsonData, setJsonData] = useState<MaterialCertification | null>(null);
   const [isValidJson, setIsValidJson] = useState(true);
   const [validationErrors, setValidationErrors] = useState<string[]>([]);
+  const [currentTemplate, setCurrentTemplate] = useState('aluminum');
+  const [editorKey, setEditorKey] = useState(0);
+  const localIP = '192.168.1.86';
   
   const { handleSubmit } = useForm();
-  const [jsonString, setJsonString] = useState<string>(JSON.stringify(sampleData, null, 2));
+  const [jsonString, setJsonString] = useState<string>(JSON.stringify(aluminumBarData, null, 2));
 
   // Validate the JSON whenever it changes
   useEffect(() => {
@@ -91,6 +96,15 @@ export default function Home() {
     }
   }, [jsonString]);
 
+  const getBackendUrl = () => {
+    if (localIP) {
+      // Extract port from your NEXT_PUBLIC_BACKEND_URL or use a default
+      const backendPort = new URL(process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3000').port || '3000';
+      return `http://${localIP}:${backendPort}`;
+    }
+    return process.env.NEXT_PUBLIC_BACKEND_URL;
+  };
+
   const onSubmit = async () => {
     try {
       setIsSubmitting(true);
@@ -100,7 +114,7 @@ export default function Home() {
       const parsedData = JSON.parse(jsonString) as MaterialCertification;
       setJsonData(parsedData);
       
-      const res = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/generate-proof`, {
+      const res = await axios.post(`${getBackendUrl()}/api/generate-proof`, {
         certification: parsedData
       });
 
@@ -117,6 +131,111 @@ export default function Home() {
     }
   };
 
+  const switchTemplate = (template) => {
+    if (template === 'aluminum') {
+      setJsonString(JSON.stringify(aluminumBarData, null, 2));
+      setCurrentTemplate('aluminum');
+    } else if (template === 'copper') {
+      setJsonString(JSON.stringify(copperSheetData, null, 2));
+      setCurrentTemplate('copper');
+    } else if (template === 'steel') {
+      setJsonString(JSON.stringify(steelRodData, null, 2));
+      setCurrentTemplate('steel');
+    }
+    // Force editor to remount
+    setEditorKey(prevKey => prevKey + 1);
+  };
+
+  const getVerificationUrl = () => {
+    const baseUrl = localIP 
+      ? `http://${localIP}:${window.location.port || '3000'}`
+      : process.env.NEXT_PUBLIC_API_URL;
+      
+    return `${baseUrl}/verify/${proofId}/${jsonData.certificate_id}`;
+  };
+
+  const printQRCode = async () => {
+    if (!proofId || !jsonData) return;
+    
+    try {
+      // Create a high-resolution version of the QR code for printing
+      const qrCodeUrl = getVerificationUrl();
+      
+      // Create a new window for printing
+      const printWindow = window.open('', '_blank');
+      
+      // Set up the print content with proper sizing for 4" label
+      printWindow.document.write(`
+        <!DOCTYPE html>
+        <html>
+          <head>
+            <title>Print QR Code</title>
+            <style>
+              @page {
+                size: 4in 4in;
+                margin: 0;
+              }
+              body {
+                margin: 0;
+                padding: 0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 4in;
+                height: 4in;
+                background-color: white;
+              }
+              .qr-container {
+                width: 3.8in;
+                height: 3.8in;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+              }
+              .qr-code {
+                width: 3.5in;
+                height: 3.5in;
+              }
+              .qr-label {
+                font-family: Arial, sans-serif;
+                font-size: 10pt;
+                margin-top: 0.1in;
+                text-align: center;
+                word-break: break-all;
+              }
+            </style>
+          </head>
+          <body>
+            <div class="qr-container">
+              <div class="qr-code">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=800x800&data=${encodeURIComponent(qrCodeUrl)}" width="100%" height="100%" />
+              </div>
+              <div class="qr-label">
+                ${jsonData.certificate_id}
+              </div>
+            </div>
+            <script>
+              // Print automatically when loaded
+              window.onload = function() {
+                setTimeout(() => {
+                  window.print();
+                  setTimeout(() => window.close(), 500);
+                }, 500);
+              };
+            </script>
+          </body>
+        </html>
+      `);
+      
+      printWindow.document.close();
+      
+    } catch (error) {
+      console.error('Printing failed:', error);
+      alert(`Printing failed: ${error.message}`);
+    }
+  };
+  
   const isSubmitDisabled = isSubmitting || !isValidJson || validationErrors.length > 0;
 
   return (
@@ -125,14 +244,46 @@ export default function Home() {
         <h1 className="text-3xl font-bold mb-6">Material Verification Portal</h1>
         
         <div className="mb-6">
-          <h2 className="text-xl font-semibold mb-2">Material Certification</h2>
-          <p className="mb-4">Enter or upload your material certification data below:</p>
-          
+          <h2 className="text-xl font-semibold mb-2">Material Certification</h2>          
+          <div className="mb-4 flex space-x-4">
+            <button
+              onClick={() => switchTemplate('aluminum')}
+              className={`px-4 py-2 rounded ${
+                currentTemplate === 'aluminum' 
+                  ? 'bg-blue-600 text-white' 
+                  : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
+              }`}
+            >
+              Aluminum Bar
+            </button>
+            <button
+              onClick={() => switchTemplate('copper')}
+              className={`px-4 py-2 rounded ${
+                currentTemplate === 'copper' 
+                  ? 'bg-blue-600 text-white' 
+                  : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
+              }`}
+            >
+              Copper Sheet
+            </button>
+            <button
+              onClick={() => switchTemplate('steel')}
+              className={`px-4 py-2 rounded ${
+                currentTemplate === 'steel' 
+                  ? 'bg-blue-600 text-white' 
+                  : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
+              }`}
+            >
+              Stainless Steel Rod
+            </button>
+          </div>
+  
           <div className="border rounded-lg overflow-hidden" style={{ height: "800px" }}>
             <Editor
+              key={editorKey}
               height="800px"
-              defaultLanguage="json"
-              defaultValue={jsonString}
+              language="json"
+              value={jsonString}
               onChange={(value) => setJsonString(value || '')}
               options={{
                 minimap: { enabled: false },
@@ -176,14 +327,23 @@ export default function Home() {
             
             <div className="flex flex-col items-center">
               <QRCodeSVG 
-                value={`${process.env.NEXT_PUBLIC_API_URL}/verify/${proofId}/${jsonData.certificate_id}`}
+                value={getVerificationUrl()}
                 size={200}
                 marginSize={4}
               />
               
+              <div className="mt-4 flex gap-4">
+                <button
+                  onClick={printQRCode}
+                  className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
+                >
+                  Print QR Code (4")
+                </button>
+              </div>
+              
               <p className="mt-4 text-sm">
-                Verification URL: <a href={`/verify/${proofId}/${jsonData.certificate_id}`} className="text-blue-600 underline">
-                  {process.env.NEXT_PUBLIC_API_URL}/verify/{proofId}/{jsonData.certificate_id}
+                Verification URL: <a href={getVerificationUrl()} className="text-blue-600 underline">
+                  {getVerificationUrl()}
                 </a>
               </p>
             </div>

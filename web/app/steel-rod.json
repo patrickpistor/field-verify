@@ -1,0 +1,118 @@
+{
+  "certificate_id": "CERT-SS-456789",
+  "batch_number": "H735492",
+  "material": {
+    "type": "Stainless Steel Rod",
+    "designation": "ASTM-A582",
+    "grade": "303",
+    "shape": "1.000 ROUND BAR",
+    "manufacturer": "Sandvik Materials",
+    "manufacturer_location": "Scranton, PA 18503"
+  },
+  "batch": {
+    "production_date": "2025-01-18",
+    "quantity": 120,
+    "units": "FT"
+  },
+  "properties_tested": {
+    "public_properties": {
+      "tensile_strength": {
+        "value": 98.5,
+        "unit": "KSI",
+        "threshold": {
+          "min": 85,
+          "max": 120
+        },
+        "passed": true
+      },
+      "yield_strength": {
+        "value": 65.8,
+        "unit": "KSI",
+        "threshold": {
+          "min": 50,
+          "max": 80
+        },
+        "passed": true
+      },
+      "hardness": {
+        "value": 92.0,
+        "unit": "HRB",
+        "threshold": {
+          "min": 85,
+          "max": 100
+        },
+        "passed": true
+      }
+    },
+    "private_properties": {
+      "chemical_composition_C": {
+        "value": 0.08,
+        "unit": "%",
+        "threshold": {
+          "min": 0,
+          "max": 0.15
+        },
+        "passed": true
+      },
+      "chemical_composition_Cr": {
+        "value": 18.2,
+        "unit": "%",
+        "threshold": {
+          "min": 17,
+          "max": 19
+        },
+        "passed": true
+      },
+      "chemical_composition_Ni": {
+        "value": 9.3,
+        "unit": "%",
+        "threshold": {
+          "min": 8,
+          "max": 10
+        },
+        "passed": true
+      },
+      "chemical_composition_S": {
+        "value": 0.28,
+        "unit": "%",
+        "threshold": {
+          "min": 0.15,
+          "max": 0.35
+        },
+        "passed": true
+      }
+    },
+    "property_standards_mapping": {
+      "tensile_strength": [
+        "ASTM-A582"
+      ],
+      "yield_strength": [
+        "ASTM-A582"
+      ],
+      "hardness": [
+        "ASTM-A582"
+      ],
+      "chemical_composition": [
+        "ASTM-A582"
+      ]
+    }
+  },
+  "compliance": [
+    {
+      "standard": "ASTM-A582",
+      "clause": "Mechanical Properties",
+      "result": "PASS"
+    },
+    {
+      "standard": "ASTM-A582",
+      "clause": "Chemical Composition",
+      "result": "PASS"
+    }
+  ],
+  "verified_by": {
+    "test_report_number": "SM-A582-20250118-76",
+    "laboratory": "Sandvik Materials Laboratory",
+    "test_date": "2025-01-25",
+    "certified_by": "Robert Chen, Metallurgist"
+  }
+}

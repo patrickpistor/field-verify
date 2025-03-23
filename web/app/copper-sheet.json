@@ -1,0 +1,96 @@
+{
+  "certificate_id": "CERT-CU-789012",
+  "batch_number": "06-456608",
+  "material": {
+    "type": "Copper Sheet",
+    "designation": "ASTM-B152",
+    "grade": "C11000",
+    "shape": "0.0028 X 12 X 12 SHEET",
+    "manufacturer": "Wieland Metal Services",
+    "manufacturer_location": "Alliance, OH 44601"
+  },
+  "batch": {
+    "production_date": "2025-02-15",
+    "quantity": 40,
+    "units": "PCS"
+  },
+  "properties_tested": {
+    "public_properties": {
+      "tensile_strength": {
+        "value": 35.0,
+        "unit": "KSI",
+        "threshold": {
+          "min": 32,
+          "max": 40
+        },
+        "passed": true
+      },
+      "elongation": {
+        "value": 45.0,
+        "unit": "%",
+        "threshold": {
+          "min": 35,
+          "max": 55
+        },
+        "passed": true
+      },
+      "gauge": {
+        "value": 0.0028,
+        "unit": "in",
+        "threshold": {
+          "min": 0.00252,
+          "max": 0.00308
+        },
+        "passed": true
+      }
+    },
+    "private_properties": {
+      "chemical_composition_Cu": {
+        "value": 99.96,
+        "unit": "%",
+        "threshold": {
+          "min": 99.9,
+          "max": 100
+        },
+        "passed": true
+      }
+    },
+    "property_standards_mapping": {
+      "tensile_strength": [
+        "ASTM-B152"
+      ],
+      "elongation": [
+        "ASTM-B152"
+      ],
+      "gauge": [
+        "ASTM-B152"
+      ],
+      "chemical_composition": [
+        "ASTM-B152"
+      ]
+    }
+  },
+  "compliance": [
+    {
+      "standard": "ASTM-B152",
+      "clause": "Mechanical Properties",
+      "result": "PASS"
+    },
+    {
+      "standard": "ASTM-B152",
+      "clause": "Chemical Composition",
+      "result": "PASS"
+    },
+    {
+      "standard": "ASTM-B152",
+      "clause": "Dimensional Requirements",
+      "result": "PASS"
+    }
+  ],
+  "verified_by": {
+    "test_report_number": "WMS-223688-131845",
+    "laboratory": "Wieland Quality Lab",
+    "test_date": "2025-02-20",
+    "certified_by": "Maria Johnson, Materials Specialist"
+  }
+}

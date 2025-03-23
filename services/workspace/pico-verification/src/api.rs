@@ -45,7 +45,7 @@ pub async fn start_api(port: u16, output_dir: PathBuf) -> Result<()> {
         .or(verify_proof_route(Arc::clone(&state)));
 
     let cors = warp::cors()
-        .allow_origin("http://localhost:3001")
+        .allow_any_origin() // TODO definitely don't deploy this
         .allow_methods(vec!["POST", "GET", "OPTIONS"])
         .allow_headers(vec!["Content-Type"])
         .allow_credentials(true);

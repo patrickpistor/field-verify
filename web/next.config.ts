@@ -1,7 +1,10 @@
-import type { NextConfig } from "next";
+/** @type {import('next').NextConfig} */
+const nextConfig: import('next').NextConfig = {
+  experimental: {
+    serverActions: {
+      allowedOrigins: ['localhost:3001', 'field-verify-l6h5umnaw-patrick-pistors-projects.vercel.app'],
+    },
+  },
+}
 
-const nextConfig: NextConfig = {
-  /* config options here */
-};
-
-export default nextConfig;
+module.exports = nextConfig
