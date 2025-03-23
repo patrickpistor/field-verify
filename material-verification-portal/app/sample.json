@@ -1,0 +1,92 @@
+{
+  "certificate_id": "CERT-ALU-123456",
+  "batch_number": "200250141",
+  "material": {
+    "type": "Aluminum Bar",
+    "designation": "ASTM-B221-14",
+    "grade": "6061-T6511",
+    "shape": "0.500 X 1.750 SC RECT BAR",
+    "manufacturer": "KAISER ALUMINUM",
+    "manufacturer_location": "KALAMAZOO, MI 49048"
+  },
+  "batch": {
+    "production_date": "2025-03-01",
+    "quantity": 88,
+    "units": "PCS"
+  },
+  "properties_tested": {
+    "public_properties": {
+      "tensile_strength": {
+        "value": 53.9,
+        "unit": "KSI",
+        "threshold": {
+          "min": 42.0,
+          "max": 100.0
+        },
+        "passed": true
+      },
+      "yield_strength": {
+        "value": 50.6,
+        "unit": "KSI",
+        "threshold": {
+          "min": 35.0,
+          "max": 100.0
+        },
+        "passed": true
+      },
+      "elongation": {
+        "value": 16.0,
+        "unit": "%",
+        "threshold": {
+          "min": 8.0,
+          "max": 30.0
+        },
+        "passed": true
+      }
+    },
+    "private_properties": {
+      "chemical_composition_Si": {
+        "value": 0.75,
+        "unit": "%",
+        "threshold": {
+          "min": 0.4,
+          "max": 0.8
+        },
+        "passed": true
+      },
+      "chemical_composition_Fe": {
+        "value": 0.25,
+        "unit": "%",
+        "threshold": {
+          "min": 0.0,
+          "max": 0.7
+        },
+        "passed": true
+      }
+    },
+    "property_standards_mapping": {
+      "tensile_strength": ["ASTM-B221-14"],
+      "yield_strength": ["ASTM-B221-14"],
+      "elongation": ["ASTM-B221-14"],
+      "chemical_composition": ["ASTM-B221-14"]
+    }
+  },
+  "compliance": [
+    {
+      "standard": "ASTM-B221-14",
+      "clause": "Mechanical Properties",
+      "result": "PASS"
+    },
+    {
+      "standard": "ASTM-B221-14",
+      "clause": "Chemical Composition",
+      "result": "PASS"
+    }
+  ],
+  "verified_by": {
+    "test_report_number": "TR-202503-01",
+    "laboratory": "Materials Testing Labs",
+    "test_date": "2025-03-15",
+    "certified_by": "John Smith, Materials Engineer"
+  }
+}
