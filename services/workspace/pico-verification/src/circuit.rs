@@ -85,7 +85,7 @@ pub fn verify_proof(proof_path: &str, output_dir: &Path, cert: &MaterialCertific
     let proof: Value = serde_json::from_str(&proof_data)?;
     
     // Extract the proof stream from the proof file - this is the key part we need to fix
-    let public_values = proof["proof_stream"].as_array()
+    let public_values = proof["pv_stream"].as_array()
         .ok_or_else(|| anyhow::anyhow!("Missing public values in proof"))?;
     
     // The first public value is the overall compliance status
