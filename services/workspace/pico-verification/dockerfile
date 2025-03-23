@@ -34,4 +34,4 @@ RUN cargo build --release
 EXPOSE 3000
 
 # Start the API server
-CMD ["cargo", "run", "--release", "--", "--api", "--output", "/project/output", "--port", "3000"]
+CMD ["cargo", "run", "--release", "--", "--api", "--port", "3000", "--output", "/data"]
