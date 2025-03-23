@@ -8,6 +8,7 @@ use std::path::PathBuf;
 use std::sync::Arc;
 use warp::{Filter, Rejection, Reply};
 use warp::reply::json;
+use warp::cors::Cors;
 use serde::{Deserialize, Serialize};
 
 // Request/Response types
@@ -42,10 +43,19 @@ pub async fn start_api(port: u16, output_dir: PathBuf) -> Result<()> {
     // Define routes
     let api = generate_proof_route(Arc::clone(&state))
         .or(verify_proof_route(Arc::clone(&state)));
+
+    let cors = warp::cors()
+        .allow_origin("http://localhost:3001")
+        .allow_methods(vec!["POST", "GET", "OPTIONS"])
+        .allow_headers(vec!["Content-Type"])
+        .allow_credentials(true);
+    
+    // Apply CORS to routes
+    let routes = api.with(cors);
     
     // Start the server
     tracing::info!("Starting API server on port {}", port);
-    warp::serve(api).run(([0, 0, 0, 0], port)).await;
+    warp::serve(routes).run(([0, 0, 0, 0], port)).await;
     
     Ok(())
 }
