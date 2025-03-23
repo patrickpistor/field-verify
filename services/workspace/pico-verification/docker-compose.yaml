@@ -4,9 +4,9 @@ services:
       context: ../
       dockerfile: pico-verification/dockerfile
     volumes:
-      - ./:/project
-      - ../verification-app:/project/verification-app 
-      - ../pico-verification:/project/pico-verification
+      - ./:/project/pico-verification
+      - ../verification-app:/project/verification-app
+      - ./output:/project/output
     environment:
       - RUST_BACKTRACE=1
     ports:

@@ -15,22 +15,23 @@ RUN git clone https://github.com/brevis-network/pico
 WORKDIR /tmp/pico/sdk/cli
 RUN cargo install --locked --force --path .
 
-# Set default working directory 
+# Set working directory
 WORKDIR /project
 
-# Copy the entire verification-app directory
-COPY ../verification-app /project/verification-app
+# Copy only the necessary source code
+COPY . /project
 
-# Verify contents
-RUN pwd && ls -la /project/verification-app/app && find /project -name "Cargo.toml"
+# Make sure output directory exists
+RUN mkdir -p /project/output
 
-# Set working directory for build
-WORKDIR /project/verification-app/app
-
-# Build the RISC-V verification app
-RUN cargo pico build
-
+# Set the working directory to where Cargo.toml exists
 WORKDIR /project/pico-verification
 
-# This ensures the API starts when the container starts
+# Build the project
+RUN cargo build --release
+
+# Expose the port
+EXPOSE 3000
+
+# Start the API server
 CMD ["cargo", "run", "--release", "--", "--api", "--output", "/project/output", "--port", "3000"]
